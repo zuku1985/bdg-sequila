@@ -1,6 +1,6 @@
 package org.biodatageeks.rangejoins.optimizer
 
-import jdk.nashorn.internal.ir.debug.ObjectSizeCalculator
+import org.apache.spark.util.SizeEstimator
 import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
 import org.apache.spark.util.SizeEstimator
@@ -20,7 +20,7 @@ class JoinOptimizer(sc: SparkContext, rdd: RDD[IntervalWithRow[Int]], rddCount :
 
 
    private def estimateBroadcastSize(rdd: RDD[IntervalWithRow[Int]], rddCount: Long): Long = {
-     (ObjectSizeCalculator.getObjectSize(rdd.first()) * rddCount) /10
+     (SizeEstimator.estimate(rdd.first()) * rddCount) /10
      //FIXME: Do not know why the size ~10x the actual size is- Spark row representation or getObject size in bits???
   }
 
